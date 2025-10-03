@@ -1,17 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-p = 0.0
-uplimit = 11*np.pi
+uplimit = 2*np.pi
+p = 0 - uplimit
 increment = 1/10
-x = np.linspace(0, uplimit, 100)
+x = np.linspace( 0 - uplimit, uplimit, 100)
 plt.figure(figsize=(5, 2.7), layout='constrained')
 
 
 while(p < uplimit):
-    a = np.cos(p)
-    b = np.sin(p) - np.cos(p) * p
-    plt.plot(x, a*x + b, color="black", linewidth="0.2")
+    a = 1 - ((p**2) / 2) + ((p**4) / 24)
+    b = (2 * (p**3) / 6) - (4 * (p**5) / 120)
+    plt.plot(x, (a*x) + b, color="black", linewidth="0.2")
     p += increment
 
 plt.show()
