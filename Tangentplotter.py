@@ -12,6 +12,6 @@ while(p < uplimit):
     a = 1 - ((p**2) / 2) + ((p**4) / 24)
     b = (2 * (p**3) / 6) - (4 * (p**5) / 120)
     plt.plot(x, (a*x) + b, color="black", linewidth="0.2")
-    p += increment
+    p += increment / (1 + abs(1/(1 + a**2) * (0 - p + ((p**3)/6))))
 
 plt.show()
