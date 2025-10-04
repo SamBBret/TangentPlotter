@@ -15,4 +15,6 @@ while(p < uplimit):
     p += increment / (0.1 + abs(1/(1 + a**2) * (0 - p + ((p**3)/6))))
 
 plt.axis("equal")
+plt.xlim(-100, 100)
+plt.ylim(-100, 100)
 plt.show()
