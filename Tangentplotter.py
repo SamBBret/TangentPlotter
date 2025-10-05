@@ -9,7 +9,10 @@ p = 0-functionlimit
 increment = 1/30
 plt.figure(figsize=(5, 5), layout='constrained')
 
+counter = 0
+
 while(p < functionlimit):
+    counter += 1
     xpoint = []
     ypoint = []
     a = sci.digamma(p) * sci.gamma(p)
@@ -33,7 +36,9 @@ while(p < functionlimit):
 
     plt.plot(xpoint, ypoint, color="black", linewidth="0.2")
     p += increment / (0.5 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
-    
+
+print(counter)   
 plt.axis("equal")
 plt.show()
+
 
