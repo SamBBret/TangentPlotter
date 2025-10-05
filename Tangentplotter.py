@@ -8,7 +8,12 @@ p = 0-functionlimit
 increment = 1/30
 plt.figure(figsize=(5, 5), layout='constrained')
 
+counter = 0
+
 while(p < functionlimit):
+
+    counter += 1
+
     xpoint = []
     ypoint = []
     a = 1 - ((p**2) / 2) + ((p**4) / 24)
@@ -33,6 +38,7 @@ while(p < functionlimit):
     plt.plot(xpoint, ypoint, color="black", linewidth="0.2")
     p += increment / (0.1 + abs(1/(1 + a**2) * (0 - p + ((p**3)/6))))
     
+print(counter)
 plt.axis("equal")
 plt.show()
 
