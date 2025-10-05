@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-functionlimit = 5*np.pi
+functionlimit = 8*np.pi
 uplimit = 5*np.pi
 sidelimit = 6*np.pi
 p = 0-functionlimit
@@ -31,7 +31,7 @@ while(p < functionlimit):
         ypoint.append(uplimit)
 
     plt.plot(xpoint, ypoint, color="black", linewidth="0.2")
-    p += increment / (0.1 + abs(1/(1 + a**2) * (-np.sin(p))))
+    p += increment / (0.1 + abs(1/(1 + a**2) * (0 - p + ((p**3)/6))))
     
 plt.axis("equal")
 plt.show()
