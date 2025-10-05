@@ -2,14 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.special as sci
 
-functionlimit = 5*np.pi
+functionlimit = 7*np.pi
 uplimit = 5*np.pi
 sidelimit = 6*np.pi
-p = 0-functionlimit
+p = -7.999
 increment = 1/30
 plt.figure(figsize=(5, 5), layout='constrained')
 
 counter = 0
+res = 1
 
 while(p < functionlimit):
     counter += 1
@@ -20,22 +21,22 @@ while(p < functionlimit):
     c = a * (-sidelimit) + b
     if abs(c) <= uplimit:
         xpoint.append(-sidelimit)
-        ypoint.append(c)
+        ypoint.append(round(c, res))
     c = a * sidelimit + b
     if abs(c) <= uplimit:
         xpoint.append(sidelimit)
-        ypoint.append(c)
+        ypoint.append(round(c, res))
     c = (-uplimit - b) / a
     if abs(c) < sidelimit:
-        xpoint.append(c)
+        xpoint.append(round(c, res))
         ypoint.append(-uplimit)
     c = (uplimit - b) / a
     if abs(c) < sidelimit:
-        xpoint.append(c)
+        xpoint.append(round(c, res))
         ypoint.append(uplimit)
 
     plt.plot(xpoint, ypoint, color="black", linewidth="0.2")
-    p += increment / (0.5 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
+    p += increment / (0.3 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
 
 print(counter)   
 plt.axis("equal")
