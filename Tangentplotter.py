@@ -12,22 +12,22 @@ while(p < functionlimit):
     xpoint = []
     ypoint = []
     a = np.cos(p)
-    c = np.sin(p) - a * p
-    b = a * (-sidelimit) + c
-    if abs(b) <= uplimit:
+    b = np.sin(p) - a * p
+    c = a * (-sidelimit) + b
+    if abs(c) <= uplimit:
         xpoint.append(-sidelimit)
-        ypoint.append(b)
-    b = a * sidelimit + c
-    if abs(b) <= uplimit:
+        ypoint.append(c)
+    c = a * sidelimit + b
+    if abs(c) <= uplimit:
         xpoint.append(sidelimit)
-        ypoint.append(b)
-    b = (-uplimit - c) / a
-    if abs(b) < sidelimit:
-        xpoint.append(b)
+        ypoint.append(c)
+    c = (-uplimit - b) / a
+    if abs(c) < sidelimit:
+        xpoint.append(c)
         ypoint.append(-uplimit)
-    b = (uplimit - c) / a
-    if abs(b) < sidelimit:
-        xpoint.append(b)
+    c = (uplimit - b) / a
+    if abs(c) < sidelimit:
+        xpoint.append(c)
         ypoint.append(uplimit)
 
     plt.plot(xpoint, ypoint, color="black", linewidth="0.2")
