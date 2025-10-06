@@ -36,7 +36,7 @@ while(p < functionlimit):
         ypoint.append(uplimit)
 
     plt.plot(xpoint, ypoint, color="black", linewidth="0.2")
-    p += increment / (0.3 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
+    p += increment / (0.2 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
 
 print(counter)   
 plt.axis("equal")
