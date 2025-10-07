@@ -5,41 +5,53 @@ import scipy.special as sci
 functionlimit = 7*np.pi
 uplimit = 5*np.pi
 sidelimit = 6*np.pi
-p = -7.999
+p = -7.99
 increment = 1/30
-plt.figure(figsize=(5, 5), layout='constrained')
+fig, ax = plt.subplots(figsize=(5, 5), layout='constrained')
 
-counter = 0
-res = 1
+state = {'index': 0}
+lines = []
 
 while(p < functionlimit):
-    counter += 1
+
     xpoint = []
     ypoint = []
     a = sci.digamma(p) * sci.gamma(p)
     b = sci.gamma(p) - a * p
-    c = a * (-sidelimit) + b
-    if abs(c) <= uplimit:
+    c = (0.25 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
+    d = a * (-sidelimit) + b
+    if abs(d) <= uplimit:
         xpoint.append(-sidelimit)
-        ypoint.append(round(c, res))
-    c = a * sidelimit + b
-    if abs(c) <= uplimit:
+        ypoint.append(d)
+    d = a * sidelimit + b
+    if abs(d) <= uplimit:
         xpoint.append(sidelimit)
-        ypoint.append(round(c, res))
-    c = (-uplimit - b) / a
-    if abs(c) < sidelimit:
-        xpoint.append(round(c, res))
+        ypoint.append(d)
+    d = (-uplimit - b) / a
+    if abs(d) < sidelimit:
+        xpoint.append(d)
         ypoint.append(-uplimit)
-    c = (uplimit - b) / a
-    if abs(c) < sidelimit:
-        xpoint.append(round(c, res))
-        ypoint.append(uplimit)
+    d = (uplimit - b) / a
+    if abs(d) < sidelimit:
+        xpoint.append(d)
+        ypoint.append(uplimit) 
 
-    plt.plot(xpoint, ypoint, color="black", linewidth="0.2")
-    p += increment / (0.2 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
+    lines.append([xpoint, ypoint])
+    p += increment / c
 
-print(counter)   
-plt.axis("equal")
+plt.axis("equal")  
+print(len(lines))
+
+def on_key(event):
+    if event.key == " " and len(lines) >  state['index']:
+        ax.plot(lines[state['index']][0], lines[state['index']][1], color="black", linewidth="0.2")
+        plt.draw()
+        print(str(state['index']) + ": \n" + str(lines[state['index']]))
+        state['index'] += 1
+
+ax.set_xlim(-sidelimit - 1, sidelimit + 1)
+ax.set_ylim(-uplimit - 1, uplimit + 1)
+ax.set_aspect('equal', adjustable='box')
+fig.canvas.mpl_connect('key_press_event', on_key)
 plt.show()
-
 
