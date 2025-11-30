@@ -2,9 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.special as sci
 
+zoom = 0.8
 functionlimit = 7*np.pi
-uplimit = 5*np.pi
-sidelimit = 6*np.pi
+uplimit = 8*zoom
+sidelimit = 10*zoom 
 p = -7.99
 increment = 1/30
 fig, ax = plt.subplots(figsize=(5, 5), layout='constrained')
