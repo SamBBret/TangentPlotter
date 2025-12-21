@@ -2,56 +2,148 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.special as sci
 
-zoom = 0.8
+class Vector2:
+    __slots__ = ("x", "y")
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+xsectors = 500
+ysectors = 400
+
+xreallenght = 1000
+
+halfnailwidth = 0.6 / 2
+
+zoom = 0.014
 functionlimit = 7*np.pi
-uplimit = 8*zoom
-sidelimit = 10*zoom 
+uplimit = ysectors*zoom
+sidelimit = xsectors*zoom 
 p = -7.99
 increment = 1/30
 fig, ax = plt.subplots(figsize=(5, 5), layout='constrained')
 
+sectors_to_mm = xreallenght / xsectors
+coord_to_mm  = xreallenght / sidelimit / 2
+coord_to_sectors = xsectors / sidelimit / 2
+
 state = {'index': 0}
 lines = []
 
+print("0-gamma")
+print("1-sin")
+
+functiontoDraw = input("Function to draw:")
+
 while(p < functionlimit):
 
-    xpoint = []
-    ypoint = []
+    points = []
     a = sci.digamma(p) * sci.gamma(p)
     b = sci.gamma(p) - a * p
     c = (0.25 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
     d = a * (-sidelimit) + b
+
+    d = a * (-sidelimit) + b
     if abs(d) <= uplimit:
-        xpoint.append(-sidelimit)
-        ypoint.append(d)
+        points.append(Vector2(-sidelimit, d))
+
     d = a * sidelimit + b
     if abs(d) <= uplimit:
-        xpoint.append(sidelimit)
-        ypoint.append(d)
+        points.append(Vector2(sidelimit, d))
+
     d = (-uplimit - b) / a
     if abs(d) < sidelimit:
-        xpoint.append(d)
-        ypoint.append(-uplimit)
+        points.append(Vector2(d, -uplimit))
+
     d = (uplimit - b) / a
     if abs(d) < sidelimit:
-        xpoint.append(d)
-        ypoint.append(uplimit) 
+        points.append(Vector2(d, uplimit))
 
-    lines.append([xpoint, ypoint])
+    lines.append(points)
     p += increment / c
+
+for line in lines:
+    for p in line:
+        if p.x == -sidelimit:
+            p.x = p.x * coord_to_mm
+            p.y = p.y * coord_to_sectors 
+            if p.y - round(((p.y / ysectors) + 0.5) * ysectors) + ysectors/2 + .5 >= 1 - halfnailwidth:
+            
+                p.y = round(((p.y / ysectors) + 0.5) * ysectors - (ysectors/2)) * sectors_to_mm
+                print(p.y)
+            elif p.y - round(((p.y /( 2 * uplimit)) + 0.5) * ysectors) + ysectors/2 + .5 <  .5 - halfnailwidth:
+
+                 p.y = ((round(((p.y / ysectors) + 0.5) * ysectors) + 1 - (ysectors/2)) * sectors_to_mm)
+                 print("ola")
+            else:
+                
+                 p.y = ((round(((p.y / ysectors) + 0.5) * ysectors) + (1 - halfnailwidth * 2) - (ysectors/2)) * sectors_to_mm)
+                 print("hi")
+
+        elif p.x == sidelimit:
+            p.x = p.x * coord_to_mm
+            p.y = p.y * coord_to_sectors 
+            if p.y - round(((p.y / ysectors) + 0.5) * ysectors) + ysectors/2 + .5 < halfnailwidth:
+            
+                p.y = round(((p.y / ysectors) + 0.5) * ysectors - (ysectors/2)) * sectors_to_mm
+                print(p.y)
+            elif p.y - round(((p.y /( 2 * uplimit)) + 0.5) * ysectors) + ysectors/2 + .5 >=  .5 + halfnailwidth:
+
+                 p.y = ((round(((p.y / ysectors) + 0.5) * ysectors) + 1 - (ysectors/2)) * sectors_to_mm)
+                 print("ola")
+            else:
+                
+                 p.y = ((round(((p.y / ysectors) + 0.5) * ysectors) + (halfnailwidth * 2) - (ysectors/2)) * sectors_to_mm)
+                 print("hi")
+        
+                 
+        elif p.y == uplimit:
+            p.y = p.y * coord_to_mm
+            p.x = p.x * coord_to_sectors
+            if p.x - round(((p.x / xsectors) + 0.5) * xsectors) + xsectors/2 + .5 >= 1 - halfnailwidth:
+
+                p.x = (round(((p.x / xsectors) + 0.5) * xsectors - (xsectors/2)) * sectors_to_mm)
+
+            elif p.x - round(((p.x / xsectors) + 0.5) * xsectors) + xsectors/2 + .5 < .5 - halfnailwidth:
+
+                 p.x = ((round(((p.x / xsectors) + 0.5) * xsectors) + 1 - (xsectors/2)) * sectors_to_mm)
+
+            else:
+                
+                 p.x = ((round(((p.x / xsectors) + 0.5) * xsectors) + (1 - halfnailwidth * 2) - (xsectors/2)) * sectors_to_mm)
+ 
+        else:
+            p.y = p.y * coord_to_mm
+            p.x = p.x * coord_to_sectors
+            if p.x - round(((p.x / xsectors) + 0.5) * xsectors) + xsectors/2 + .5 < halfnailwidth:
+
+                p.x = (round(((p.x / xsectors) + 0.5) * xsectors - (xsectors/2)) * sectors_to_mm)
+
+            elif p.x - round(((p.x / xsectors) + 0.5) * xsectors) + xsectors/2 + .5 >= .5 + halfnailwidth:
+
+                 p.x = ((round(((p.x / xsectors) + 0.5) * xsectors) + 1 - (xsectors/2)) * sectors_to_mm)
+
+            else:
+                
+                 p.x = ((round(((p.x / xsectors) + 0.5) * xsectors) + (halfnailwidth * 2) - (xsectors/2)) * sectors_to_mm)
 
 plt.axis("equal")  
 print(len(lines))
 
 def on_key(event):
     if event.key == " " and len(lines) >  state['index']:
-        ax.plot(lines[state['index']][0], lines[state['index']][1], color="black", linewidth="0.2")
+        ax.plot([lines[state['index']][0].x, lines[state['index']][1].x], [lines[state['index']][0].y, lines[state['index']][1].y], color="black", linewidth="0.2")
         plt.draw()
-        print(str(state['index']) + ": \n" + str(lines[state['index']]))
+        print(str(state['index']) + ":")
+        print("Ponto 0:   " + str(round(lines[state['index']][0].x)) + "     " + str(round(lines[state['index']][0].y)))
+        print("Ponto 1:   " + str(round(lines[state['index']][1].x)) + "     " + str(round(lines[state['index']][1].y)))
+
         state['index'] += 1
 
-ax.set_xlim(-sidelimit - 1, sidelimit + 1)
-ax.set_ylim(-uplimit - 1, uplimit + 1)
+ax.set_xlim((-(xsectors * sectors_to_mm)/2 - 20), ((xsectors * sectors_to_mm)/2 + 20))
+ax.set_ylim((-(ysectors * sectors_to_mm)/2 - 20), ((ysectors * sectors_to_mm)/2 + 20))
 ax.set_aspect('equal', adjustable='box')
 fig.canvas.mpl_connect('key_press_event', on_key)
 plt.show()
