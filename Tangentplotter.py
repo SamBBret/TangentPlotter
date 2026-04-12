@@ -47,8 +47,6 @@ while(p < functionlimit):
     a = sci.digamma(p) * sci.gamma(p)
     b = sci.gamma(p) - a * p
 
-    c = (0.25 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
-
     d = a * (-sidelimit) + b
 
     if abs(d) <= uplimit:
@@ -70,7 +68,15 @@ while(p < functionlimit):
      
         lines.append(points)
 
-    p += increment / c
+    c = (0.25 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
+    
+    dp = increment / c
+
+    a = sci.digamma(p + dp) * sci.gamma(p + dp)
+
+    c1 = (0.25 + abs(1/(1 + (a)**2) * (a + (sci.gamma(p + dp) * sci.polygamma(1, p + dp)))))
+
+    p += increment / ((c + c1) / 2)
 
 for line in lines:
     for p in line:
