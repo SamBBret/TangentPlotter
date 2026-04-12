@@ -23,7 +23,7 @@ functionlimit = 7.98
 uplimit = ysectors*zoom
 sidelimit = xsectors*zoom 
 p = -7.98
-increment = 1/42
+increment = 1/50
 fig, ax = plt.subplots(figsize=(5, 5), layout='constrained')
 
 
@@ -68,13 +68,13 @@ while(p < functionlimit):
      
         lines.append(points)
 
-    c = (0.25 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
+    c = (0.2 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
     
     dp = increment / c
 
     a = sci.digamma(p + dp) * sci.gamma(p + dp)
 
-    c1 = (0.25 + abs(1/(1 + (a)**2) * (a + (sci.gamma(p + dp) * sci.polygamma(1, p + dp)))))
+    c1 = (0.2 + abs(1/(1 + (a)**2) * (a + (sci.gamma(p + dp) * sci.polygamma(1, p + dp)))))
 
     p += increment / ((c + c1) / 2)
 
