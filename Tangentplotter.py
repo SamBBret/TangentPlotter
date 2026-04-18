@@ -106,10 +106,15 @@ def on_key(event):
     if event.key == " ":
         draw_line()
     if event.key == "a":
-        while state['index'] < len(lines) :
-            draw_line()
-        print(len(lines))
-        print(str (string_lenght / 1000) + "m")
+        printall()
+
+printall()
+
+def printall():
+    while state['index'] < len(lines) :
+        draw_line()
+    print(len(lines))
+    print(str (string_lenght / 1000) + "m")
 
 ax.set_xlim((-(xsectors * sectors_to_mm)/2 - 20), ((xsectors * sectors_to_mm)/2 + 20))
 ax.set_ylim((-(ysectors * sectors_to_mm)/2 - 20), ((ysectors * sectors_to_mm)/2 + 20))
