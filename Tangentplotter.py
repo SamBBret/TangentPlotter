@@ -95,7 +95,6 @@ print(str (string_lenght / 1000) + "m")
 def draw_line():
     if len(lines) >  state['index']:
         ax.plot([lines[state['index']][0].x, lines[state['index']][1].x], [lines[state['index']][0].y, lines[state['index']][1].y], color="black", linewidth="0.2")
-        plt.draw()
         print(str(state['index']) + ":")
         print("Ponto 0:   " + str(round(lines[state['index']][0].x + (xreallenght / 2), 1)) + "     " + str(round(lines[state['index']][0].y + (yreallenght / 2), 1)))
         print("Ponto 1:   " + str(round(lines[state['index']][1].x + (xreallenght / 2), 1)) + "     " + str(round(lines[state['index']][1].y + (yreallenght / 2), 1)))
@@ -105,6 +104,7 @@ def draw_line():
 def on_key(event):
     if event.key == " ":
         draw_line()
+        plt.draw()
     if event.key == "a":
         printall()
 
