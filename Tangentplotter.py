@@ -1,36 +1,39 @@
+from base64 import b16decode
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.special as sci
 
-class Vector2:
-    __slots__ = ("x", "y")
+class Vector3:
+    __slots__ = ("x", "y", "s")
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, s):
         self.x = x
         self.y = y
+        self.s = s
 
 
-xreallenght = 1002
-yreallenght = 802
+xlenght = 1003.5
 
-xsectors = 501
-ysectors = xsectors * yreallenght / xreallenght
+ylenght = 802
+y1lenght = 805
 
 halfnailwidth = 0.6 / 2
 
-zoom = 0.013
+a2 = (ylenght - y1lenght)/(-xlenght - xlenght)
+a4 = (-y1lenght + ylenght)/(xlenght + xlenght)
+
+b2 = y1lenght/2 - a2 * xlenght/2
+b4 = -ylenght/2 - a4 * -xlenght/2
+
+zoom = 0.0065
 functionlimit = 7.98
-uplimit = ysectors*zoom
-sidelimit = xsectors*zoom 
-p = -7.98
+
+p = - functionlimit
 increment = 1/50
 fig, ax = plt.subplots(figsize=(5, 5), layout='constrained')
 
 
-
-sectors_to_mm = xreallenght / xsectors
-coord_to_mm  = xreallenght / sidelimit / 2
-coord_to_sectors = xsectors / sidelimit / 2
+coord_to_mm  = 1 / zoom / 2
 
 string_lenght = 0
 
@@ -48,25 +51,28 @@ while(p < functionlimit):
     a = sci.digamma(p) * sci.gamma(p)
     b = sci.gamma(p) - a * p
 
-    d = a * (-sidelimit) + b
-    if abs(d) <= uplimit:
-        points.append(Vector2(-sidelimit, d))
+    b *= coord_to_mm
 
-    d = a * sidelimit + b
-    if abs(d) <= uplimit:
-        points.append(Vector2(sidelimit, d))
+    d = a * (-xlenght/2) + b
+    if abs(d) <= ylenght/2:
+        points.append(Vector3(-xlenght/2, d, 3))
 
-    d = (-uplimit - b) / a
-    if abs(d) < sidelimit:
-        points.append(Vector2(d, -uplimit))
+    d = a * xlenght/2 + b
+    if abs(d) <= y1lenght/2:
+        points.append(Vector3(xlenght/2, d, 1))
 
-    d = (uplimit - b) / a
-    if abs(d) < sidelimit:
-        points.append(Vector2(d, uplimit))
+    d = (b2 - b) / (a - a2)  
+    if abs(d) <= xlenght/2:
+        points.append(Vector3(d, a*d + b, 2))
+    d = (b4 - b) / (a - a4)
+    if abs(d) <= xlenght/2:
+        points.append(Vector3(d, a*d + b, 4))
 
     if len(points) != 0:
      
         lines.append(points)
+
+    string_lenght += np.sqrt(np.pow(lines[-1][0].x - lines[-1][1].x, 2) + np.pow(lines[-1][0].y - lines[-1][1].y, 2))
 
     c = (0.2 + abs(1/(1 + a**2) * (a + (sci.gamma(p) * sci.polygamma(1, p)))))
     
@@ -79,14 +85,6 @@ while(p < functionlimit):
     p += increment / ((c + c1) / 2)
 
 
-for line in lines:
-    for p in line:
-        p.x = p.x * coord_to_mm
-        p.y = p.y * coord_to_mm
- 
-    string_lenght += np.sqrt(np.pow(line[0].x - line[1].x, 2) + np.pow(line[0].y - line[1].y, 2))
-
-
 plt.axis("equal")  
 print(len(lines))
 print(str (string_lenght / 1000) + "m")
@@ -96,8 +94,8 @@ def draw_line():
     if len(lines) >  state['index']:
         ax.plot([lines[state['index']][0].x, lines[state['index']][1].x], [lines[state['index']][0].y, lines[state['index']][1].y], color="black", linewidth="0.2")
         print(str(state['index']) + ":")
-        print("Ponto 0:   " + str(round(lines[state['index']][0].x + (xreallenght / 2), 1)) + "     " + str(round(lines[state['index']][0].y + (yreallenght / 2), 1)))
-        print("Ponto 1:   " + str(round(lines[state['index']][1].x + (xreallenght / 2), 1)) + "     " + str(round(lines[state['index']][1].y + (yreallenght / 2), 1)))
+        print("Ponto 0:   " + str(round(lines[state['index']][0].x + (xlenght / 2), 1)) + "     " + str(round(lines[state['index']][0].y + (ylenght / 2), 1)))
+        print("Ponto 1:   " + str(round(lines[state['index']][1].x + (xlenght / 2), 1)) + "     " + str(round(lines[state['index']][1].y + (ylenght / 2), 1)))
 
     state['index'] += 1
 
@@ -117,8 +115,8 @@ def printall():
 
 printall()
 
-ax.set_xlim((-(xsectors * sectors_to_mm)/2 - 20), ((xsectors * sectors_to_mm)/2 + 20))
-ax.set_ylim((-(ysectors * sectors_to_mm)/2 - 20), ((ysectors * sectors_to_mm)/2 + 20))
+ax.set_xlim((-(xlenght)/2 - 20), ((xlenght)/2 + 20))
+ax.set_ylim((-(max(y1lenght, ylenght))/2 - 20), ((max(y1lenght, ylenght)/2 + 20)))
 ax.set_aspect('equal', adjustable='box')
 fig.canvas.mpl_connect('key_press_event', on_key)
 plt.show()
