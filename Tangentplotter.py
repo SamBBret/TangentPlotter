@@ -12,10 +12,10 @@ class Vector3:
         self.s = s
 
 
-xlenght = 1003.5
+xlenght = 1003.5 - 1.2
 
-ylenght = 802
-y1lenght = 1000
+ylenght = 802 - 1.2
+y1lenght = 805 - 1.2
 
 halfnailwidth = 0.6 / 2
 
@@ -39,6 +39,8 @@ string_lenght = 0
 
 state = {'index': 0}
 lines = []
+
+last_line = None
 
 print("0-gamma")
 print("1-sin")
@@ -91,12 +93,22 @@ print(str (string_lenght / 1000) + "m")
 
 
 def draw_line():
+    global last_line
     if len(lines) >  state['index']:
-        ax.plot([lines[state['index']][0].x, lines[state['index']][1].x], [lines[state['index']][0].y, lines[state['index']][1].y], color="black", linewidth="0.2")
-        print(str(state['index']) + ":")
-        print("Ponto 0:   " + str(round(lines[state['index']][0].x + (xlenght / 2), 1)) + "     " + str(round(lines[state['index']][0].y + (ylenght / 2), 1)))
-        print("Ponto 1:   " + str(round(lines[state['index']][1].x + (xlenght / 2), 1)) + "     " + str(round(lines[state['index']][1].y + (ylenght / 2), 1)))
 
+        if last_line is not None:
+            last_line.set_color("black")
+            last_line.set_linewidth("0.2")
+
+        last_line, = ax.plot([lines[state['index']][0].x, lines[state['index']][1].x], [lines[state['index']][0].y, lines[state['index']][1].y], color="red", linewidth="0.6")
+        print(str(state['index']) + ":")
+        for point in lines[state['index']]:
+            if point.s == 2:
+                print("Ponto " + str(point.s) + ":   " + str(round((xlenght / 2) - point.x + 0.6, 2)) + "     " + str(round(point.y + (y1lenght / 2) + 0.6, 2)))
+            elif point.s == 3:
+                print("Ponto " + str(point.s) + ":   " + str(round(point.x + (xlenght / 2) + 0.6, 2)) + "     " + str(round((ylenght / 2) - point.y + 0.6, 2)))
+            else:
+                print("Ponto " + str(point.s) + ":   " + str(round(point.x + (xlenght / 2), 2)) + "     " + str(round(point.y + (y1lenght / 2), 2)))
     state['index'] += 1
 
 def on_key(event):
@@ -111,9 +123,10 @@ def printall():
         draw_line()
     print(len(lines))
     print(str (string_lenght / 1000) + "m")
+    plt.draw()
 
 
-printall()
+#printall()
 
 ax.set_xlim((-(xlenght)/2 - 20), ((xlenght)/2 + 20))
 ax.set_ylim((-(max(y1lenght, ylenght))/2 - 20), ((max(y1lenght, ylenght)/2 + 20)))
