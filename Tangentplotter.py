@@ -1,4 +1,5 @@
 from base64 import b16decode
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.special as sci
@@ -26,7 +27,8 @@ b2 = y1lenght/2 - a2 * xlenght/2
 b4 = -ylenght/2 - a4 * -xlenght/2
 
 zoom = 0.0065
-functionlimit = 7.98
+#functionlimit = 7.98
+functionlimit = 3.14 / 2
 
 p = - functionlimit
 increment = 1/50
@@ -50,8 +52,10 @@ print("1-sin")
 while(p < functionlimit):
 
     points = []
-    a = sci.digamma(p) * sci.gamma(p)
-    b = sci.gamma(p) - a * p
+    #a = sci.digamma(p) * sci.gamma(p)
+    #b = sci.gamma(p) - a * p
+    a = math.tan(p)
+    b = 0
 
     b *= coord_to_mm
 
@@ -84,7 +88,8 @@ while(p < functionlimit):
 
     c1 = (0.2 + abs(1/(1 + (a)**2) * (a + (sci.gamma(p + dp) * sci.polygamma(1, p + dp)))))
 
-    p += increment / ((c + c1) / 2)
+    #p += increment / ((c + c1) / 2)
+    p += 0.07
 
 
 plt.axis("equal")  
