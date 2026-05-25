@@ -92,6 +92,7 @@ print(len(lines))
 print(str (string_lenght / 1000) + "m")
 
 
+
 def draw_line():
     global last_line
     if len(lines) >  state['index']:
@@ -104,11 +105,11 @@ def draw_line():
         print(str(state['index']) + ":")
         for point in lines[state['index']]:
             if point.s == 2:
-                print("Ponto " + str(point.s) + ":   " + str(round((xlenght / 2) - point.x + 0.6, 2)) + "     " + str(round(point.y + (y1lenght / 2) + 0.6, 2)))
+                print("Ponto " + str(point.s) + ":   " + str(round(((xlenght / 2) - point.x) * (1002/xlenght) + 0.5, 2)) + "     " + str(round((point.y + (y1lenght / 2)) * (801/ylenght) + 0.5, 2)))
             elif point.s == 3:
-                print("Ponto " + str(point.s) + ":   " + str(round(point.x + (xlenght / 2) + 0.6, 2)) + "     " + str(round((ylenght / 2) - point.y + 0.6, 2)))
+                print("Ponto " + str(point.s) + ":   " + str(round((point.x + (xlenght / 2)) * (1002/xlenght) + 0.5, 2)) + "     " + str(round(((ylenght / 2) - point.y) * (801/ylenght) + 0.5, 2)))
             else:
-                print("Ponto " + str(point.s) + ":   " + str(round(point.x + (xlenght / 2), 2)) + "     " + str(round(point.y + (y1lenght / 2), 2)))
+                print("Ponto " + str(point.s) + ":   " + str(round((point.x + (xlenght / 2)) * (1002/xlenght) + 0.5, 2)) + "     " + str(round((point.y + (y1lenght / 2)) * (804/y1lenght) + 0.5, 2)))
     state['index'] += 1
 
 def on_key(event):
