@@ -13,9 +13,12 @@ class Vector3:
 
 
 xlenght = 1003.5 - 1.2
+xlenght = 1000
 
 ylenght = 802 - 1.2
 y1lenght = 805 - 1.2
+ylenght = 800
+y1lenght = 802
 
 halfnailwidth = 0.6 / 2
 
