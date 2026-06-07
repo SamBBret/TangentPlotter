@@ -19,3 +19,6 @@ Final results of the test "frametest", in which all strings coincide perfectly i
 
 Current progress of the final function (the gamma function):
 <img width="1600" height="1200" alt="WhatsApp Image 2026-05-31 at 17 49 05" src="https://github.com/user-attachments/assets/e86f3f0f-18b1-49de-a130-8b7de2943a36" />
+
+Even more current progress:
+<img width="2048" height="1536" alt="WhatsApp Image 2026-06-07 at 14 27 38" src="https://github.com/user-attachments/assets/942cee78-387a-48fc-aeaf-cee357010769" />
